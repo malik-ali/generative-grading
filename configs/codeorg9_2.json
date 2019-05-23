@@ -1,0 +1,44 @@
+{
+  "exp_name": "codeorg9_2_100k",
+  "agent": "AutoregressiveRNN",
+  "problem": "codeorg9_2_100k",
+  "domain": "education",
+  "sampling_strategy": ["standard", "tempered"],
+
+  "cuda": true,
+  "gpu_device": 4,
+  "seed": 1337,
+
+  "data_loader_workers": 8,
+  "batch_size": 64,
+
+  "save_model": true,
+  "display_progress": true,
+  "validations_per_epoch": 8,
+  "early_stopping_patience": 3,
+
+  "learning_rate": 5e-4,
+  "weight_decay": 1e-7,
+  "num_epochs": 10,
+
+  "character_level": false,
+  "learnable_alpha": false,
+  "include_anonymized": false,
+
+  "encoder_kwargs": {
+    "model_type": "rnn",
+    "hidden_size": 256,
+    "embedding_size": 512,
+    "num_layers": 4,
+    "word_dropout": 0,
+    "hidden_dropout": 0.01
+  },
+
+  "inference_kwargs": {
+    "hidden_size": 256,
+    "embedding_size": 32,
+    "num_attention_heads": 0,
+    "hidden_dropout": 0,
+    "use_batchnorm": false
+  }
+}

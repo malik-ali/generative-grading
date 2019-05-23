@@ -1,0 +1,44 @@
+{
+  "exp_name": "citizenship13_100k",
+  "agent": "AutoregressiveRNN",
+  "problem": "citizenship13_100k",
+  "domain": "education",
+  "sampling_strategy": ["standard", "uniform", "tempered"],
+
+  "cuda": true,
+  "gpu_device": 3,
+  "seed": 1337,
+
+  "data_loader_workers": 4,
+  "batch_size": 64,  
+
+  "save_model": true,
+  "display_progress": true,
+  "validations_per_epoch": 4,
+  "early_stopping_patience": 3,
+
+  "learning_rate": 5e-4,
+  "weight_decay": 0,
+  "num_epochs": 50,
+
+  "character_level": false,
+  "learnable_alpha": false,
+  "include_anonymized": false,
+
+  "encoder_kwargs": {
+    "model_type": "rnn",
+    "hidden_size": 32,
+    "embedding_size": 128,
+    "num_layers": 1,
+    "word_dropout": 0,
+    "hidden_dropout": 0
+  },
+
+  "inference_kwargs": {
+    "hidden_size": 32,
+    "embedding_size": 32,
+    "num_attention_heads": 0,
+    "hidden_dropout": 0,
+    "use_batchnorm": false
+  }
+}

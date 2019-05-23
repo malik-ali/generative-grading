@@ -1,0 +1,30 @@
+{
+    "exp_name": "pyramid_grammar",
+    "agent": "PyramidConvNet",
+  
+    "cuda": true,
+    "gpu_device": 6,
+    "seed": 1337,
+  
+    "model_type": "conv",
+    "knowledge_states": true,
+    "data_loader_workers": 4,
+    "batch_size": 64,  
+  
+    "save_model": true,
+    "display_progress": true,
+    "validations_per_epoch": 3,
+    "early_stopping_patience": 3,
+  
+    "learning_rate": 1e-5,
+    "weight_decay": 1e-7,
+    "num_epochs": 20,
+  
+    "grammar_data": true,
+  
+    "encoder_kwargs": {
+      "dropout": 0,
+      "input_size": 224
+    }
+  }
+  
