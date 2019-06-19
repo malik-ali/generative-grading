@@ -21,7 +21,7 @@ sys.path.append(CODEORG_DIR)
 import blockToTree, treeToString
 
 
-GRAMMAR = 'codeorg9_ability'
+GRAMMAR = 'liftoff'
 
 class Engine:
     _nonterminalCache = None
@@ -29,7 +29,7 @@ class Engine:
     def __init__(self, grammar_dir):
         self.reset()
         self._nonterminals, self._reusableNonterminals = self._getNonTerminals(grammar_dir)
-        
+
         # we need to do this bc we need special processing to handle this
         self._isCodeOrg = 'codeorg' in grammar_dir
 
@@ -54,7 +54,7 @@ class Engine:
                     # punt on bodies with nesting loops
                     if '{' in body:
                         return program, rubricItems, choices
-                    
+
                     lines = body.split('\n')
                     # punt if num lines is less that or equal to 2
                     if len(lines) < 2:
@@ -80,7 +80,7 @@ class Engine:
         #     program, rubricItems, choices)
         tree = blockToTree.convert(program)
         tokenList = treeToString.flatten_tree(tree)
-       
+
 
         return ' '.join(tokenList), rubricItems, choices, program
 
@@ -92,7 +92,7 @@ class Engine:
                 program = self.render('Program')
             except BaseException as e:
                 if 'Choice name' in str(e):
-                    continue 
+                    continue
                 else:
                     raise e
 
@@ -100,6 +100,7 @@ class Engine:
             rubricItems = self.getRubricItems()
             choices = self.choices
 
+            code = None
             if self._isCodeOrg:
                 program, rubricItems, choices, code = self.processCodeOrgProgram(
                     program, rubricItems, choices)
@@ -133,12 +134,12 @@ class Engine:
         '''
          This method should loop through all decisions and get their preregistered ids.
          This will give us an overview of how each reusable decision is intended to be used.
-         
+
          We group these registered ids by the ReusableDecision they are relevatn to and
          return a dictionary from ReusableDecision name to set of valid ids for that decision.
         '''
         # we keep track of the reusable non terminals
-        
+
         allRegisteredIds = defaultdict(list)
         for nonterminal in nonterminals.values():
             registeredIds = nonterminal.preregisterDecisionIds()
@@ -147,13 +148,13 @@ class Engine:
 
             for reusable_decision, valid_ids in registeredIds.items():
                 allRegisteredIds[reusable_decision].extend(list(valid_ids))
-       
+
         registeredButNotReusable = set(allRegisteredIds.keys()) - reusableNonterminals
         reusableButNotRegistered = reusableNonterminals - set(allRegisteredIds.keys())
         # make sure evely registeredId corresponds to a reusable decision.
         if registeredButNotReusable:
             raise ValueError(f'Invalid registration of non-reusable decisions {registeredButNotReusable}')
-        
+
         # print warnings for reusable decisions that dont have valid ids registered?
         if reusableButNotRegistered:
             print(f'WARNING: reusable decisions not registered anywhere: {reusableButNotRegistered}')
@@ -187,11 +188,11 @@ class Engine:
                 if not obj.startswith('__'):
                     clazz = module.__getattribute__(obj)
                     # TODO: fix hacky conditions
-                    
+
                     if inspect.isclass(clazz) and clazz.__base__.__name__.endswith('Decision') and not clazz.__name__ == 'ReusableDecision':
                         name = clazz.__name__
                         if clazz.__base__.__name__ == 'ReusableDecision':
-                            reusableNonterminals.add(name)                        
+                            reusableNonterminals.add(name)
 
                         if name in nonterminals:
                             raise ValueError('Repeated name for nonterminal: {}'.format(name))
@@ -225,8 +226,8 @@ class Engine:
 if __name__ == "__main__":
     e = Engine('grammars/'+GRAMMAR)
     for i in range(1000):
-        tokenList, rubric, choices, program = e.renderProgram()
+        program, rubric, choices, _ = e.renderProgram()
         print(choices)
-        print(program) 
+        print(program)
         print(rubric)
         print('----')
