@@ -5,7 +5,7 @@ kiwisolver==1.0.1
 matplotlib==3.0.2
 numpy==1.16.0
 Pillow==5.4.1
-protobuf==3.6.1
+protobuf==3.18.3
 pyparsing==2.3.1
 python-dateutil==2.7.5
 scikit-learn==0.20.2
